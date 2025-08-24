@@ -1,0 +1,156 @@
+DATE: 03-NOV-2023 || TOPIC: ADVANCE 'C' TOPICS IN EMBEDDED 'C'
+--------------------------------------------------
+1.Preprocessor Directives(conditional compilation):-
+--------------------------------------------------
+#if defined ( __CC_ARM )
+  #if defined __TARGET_FPU_VFP
+    #if defined (__FPU_PRESENT) && (__FPU_PRESENT == 1U)
+      #define __FPU_USED       1U
+    #else
+      #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
+      #define __FPU_USED       0U
+    #endif
+  #else
+    #define __FPU_USED         0U
+  #endif
+
+#elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #if defined __ARM_FP
+    #if defined (__FPU_PRESENT) && (__FPU_PRESENT == 1U)
+      #define __FPU_USED       1U
+    #else
+      #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
+      #define __FPU_USED       0U
+    #endif
+  #else
+    #define __FPU_USED         0U
+  #endif
+Explanation: Based on conition those statements only copied while preprocessor stage.
+	conditional compilation directives in this example is #if, #elif ,#else ,#else , #endif ,#ifdef ,#ifndef ,#warning ,#error
+----------------------------------------------------------------
+2.Function pointers:
+----------------------------------------------------------------
+/**
+  * @brief  HAL UART Callback pointer definition
+  */
+typedef  void (*pUART_CallbackTypeDef)(UART_HandleTypeDef *huart);  /*!< pointer to an UART callback function */
+typedef  void (*pUART_RxEventCallbackTypeDef)(struct __UART_HandleTypeDef *huart, uint16_t Pos);   /*!< pointer to a UART Rx Event specific callback function */
+
+#endif /* USE_HAL_UART_REGISTER_CALLBACKS */
+
+Explanation:Function pointer is created with two args those are struct __UART_HandleTypeDef *huart, uint16_t Pos
+
+----------------------------------------------------------------
+3.typedef:
+----------------------------------------------------------------
+typedef   signed          char int_least8_t;
+typedef   signed short     int int_least16_t;
+typedef   signed           int int_least32_t;
+typedef   signed       __INT64 int_least64_t;
+
+    /* minimum-width unsigned integer types */
+typedef unsigned          char uint_least8_t;
+typedef unsigned short     int uint_least16_t;
+typedef unsigned           int uint_least32_t;
+typedef unsigned       __INT64 uint_least64_t;
+
+Explanation: The typedef is a keyword that is used to provide existing data types with a new name. The C typedef keyword is used to redefine the name of already existing data types.
+
+----------------------------------------------------------------
+4.Pointer Arithmetic:
+---------------------------------------------------------------
+void RM_LCD_PutStr(char *str)
+{
+	__IO unsigned int i=0;
+
+	do
+	{
+		if(*str == '%')
+			{
+				str++;
+				int8_t cc=*str-'0';
+				if(cc>=0 && cc<=7)
+					{
+						RM_LCD_Put_Char(cc);
+					}
+Explanation: str++ is nothing but (str+1) address of str is incremented by 1 time. This is called pointer arithmetic.
+
+---------------------------------------------------------------
+5.Structures:
+--------------------------------------------------------------
+typedef struct
+{
+  __IO uint32_t MODER;    /*!< GPIO port mode register,               Address offset: 0x00      */
+  __IO uint32_t OTYPER;   /*!< GPIO port output type register,        Address offset: 0x04      */
+  __IO uint32_t OSPEEDR;  /*!< GPIO port output speed register,       Address offset: 0x08      */
+  __IO uint32_t PUPDR;    /*!< GPIO port pull-up/pull-down register,  Address offset: 0x0C      */
+  __IO uint32_t IDR;      /*!< GPIO port input data register,         Address offset: 0x10      */
+  __IO uint32_t ODR;      /*!< GPIO port output data register,        Address offset: 0x14      */
+  __IO uint32_t BSRR;     /*!< GPIO port bit set/reset register,      Address offset: 0x18      */
+  __IO uint32_t LCKR;     /*!< GPIO port configuration lock register, Address offset: 0x1C      */
+  __IO uint32_t AFR[2];   /*!< GPIO alternate function registers,     Address offset: 0x20-0x24 */
+} GPIO_TypeDef;
+
+Explanation: struct variable is created name is GPIO_TypeDef
+
+typedef struct
+{
+  __IO uint32_t MEMRMP;       /*!< SYSCFG memory remap register,                      Address offset: 0x00      */
+  __IO uint32_t PMC;          /*!< SYSCFG peripheral mode configuration register,     Address offset: 0x04      */
+  __IO uint32_t EXTICR[4];    /*!< SYSCFG external interrupt configuration registers, Address offset: 0x08-0x14 */
+  uint32_t      RESERVED[2];  /*!< Reserved, 0x18-0x1C                                                          */
+  __IO uint32_t CMPCR;        /*!< SYSCFG Compensation cell control register,         Address offset: 0x20      */
+} SYSCFG_TypeDef;
+
+Explanation: struct variable is created name is SYSCFG_TypeDef
+------------------------------------------------------------
+6.Structure Pointers:
+------------------------------------------------------------
+if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_LSE) == RCC_OSCILLATORTYPE_LSE)
+  {
+    FlagStatus       pwrclkchanged = RESET;
+
+    /* Check the parameters */
+    assert_param(IS_RCC_LSE(RCC_OscInitStruct->LSEState));
+
+    /* Update LSE configuration in Backup Domain control register    */
+    /* Requires to enable write access to Backup Domain of necessary */
+    if(__HAL_RCC_PWR_IS_CLK_DISABLED())
+    {
+      __HAL_RCC_PWR_CLK_ENABLE();
+      pwrclkchanged = SET;
+    }
+
+    if(HAL_IS_BIT_CLR(PWR->CR, PWR_CR_DBP))
+    {
+      /* Enable write access to Backup domain */
+      SET_BIT(PWR->CR, PWR_CR_DBP);
+
+      /* Wait for Backup domain Write protection disable */
+      tickstart = HAL_GetTick();
+
+      while(HAL_IS_BIT_CLR(PWR->CR, PWR_CR_DBP))
+      {
+        if((HAL_GetTick() - tickstart) > RCC_DBP_TIMEOUT_VALUE)
+        {
+          return HAL_TIMEOUT;
+        }
+      }
+    }
+
+Explanation: structure pointer value is accessed by -> symbol PWR is accessed CR value
+---------------------------------------------------------------
+7.Constant Pointer:
+---------------------------------------------------------------
+_STATIC_INLINE void ARM_MPU_Load(ARM_MPU_Region_t const* table, uint32_t cnt) 
+{
+  const uint32_t rowWordSize = sizeof(ARM_MPU_Region_t)/4U;
+  while (cnt > MPU_TYPE_RALIASES) {
+    ARM_MPU_OrderedMemcpy(&(MPU->RBAR), &(table->RBAR), MPU_TYPE_RALIASES*rowWordSize);
+    table += MPU_TYPE_RALIASES;
+    cnt -= MPU_TYPE_RALIASES;
+  }
+
+Explanation: constant is appied on pointer variable table in this example.
+---------------------------------------------------------------
+

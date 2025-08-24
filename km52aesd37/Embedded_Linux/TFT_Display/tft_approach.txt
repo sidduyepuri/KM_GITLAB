@@ -1,0 +1,30 @@
+------------------------------------------------------------------------------------
+Interface a 1.8 inch Color SPI TFT module (ST7735) with an STM32F401RBT6 controller.
+------------------------------------------------------------------------------------
+
+AIM:- The final output should print 'Kernel Masters' on the TFT screen.
+----
+PROCEDURE/APPROACH:-
+------------------
+1).Studied ST7735 TFT(Thin film transistor) module datasheet to understood specifications, communication protocols,and register programming.
+2).Then referred Raayanmini Document for which pins connected to TFT module.
+	 SCK :: Serial clock input -> connect to SPI SCK pin
+	 SDA :: Serial data input -> Connect to SPI MOSI pin
+	 DC :: Data/Command selection -> Connect to PA0
+	 RESET :: Reset -> Connect to PA1
+	 CS :: Chip Select -> Connect to PA4
+3).In STM32CubeMX configured PA0,PA1,PA4 ,Enabled SPI and Generated code.
+4).Downloaded ST7735 TFT module device driver from the internet and understood driver initialization,configuration,and operation functions.
+5).For Fonts i included fonts.h and .c and for colors GFX_FUNCTIONS.h and .c  file, for display i included ST7735.c and ST7735.h file.
+5).added TFT module device Driver (.c) and (.h) files in inc and src folders of project.
+6).Compiled in keil IDE and got errors, rectified those errors and make code as error free.
+7).Then binary file created in keil and flash loaded into Raayan mini board.
+8).Then pressed RESET button.
+9).Got output on TFT module ,output is "KERNEL MASTERS".
+
+Problems Faced in Project:-
+--------------------------
+1.Downloaded so many TFT module device drivers from internet, but i got header file errors.
+2.Finally got output with one stm32 board related TFT module device driver.
+3.I downloaded TFT module device drivers for STM32F441, but Rayaan mini board having STM32F401 microcontroller.Pins for both microcontrollers different.
+4.So i reffered Raayan mini manual to know the pin configuration of the TFT module.

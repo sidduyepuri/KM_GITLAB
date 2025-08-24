@@ -1,0 +1,18 @@
+//#include"abc.h"
+/*fun.c:1:9: fatal error: abc.h: No such file or directory
+ #include"abc.h"
+         ^~~~~~~
+compilation terminated.		*/
+
+#include "km.h"
+extern int y;
+int x=5;
+void fun()
+{
+	//printf1("sub=%d\n",x-y);	
+	//fun.c:6:2: warning: implicit declaration of function ‘printf1’; did you mean ‘printf’? [-Wimplicit-function-declaration]
+	printf("sub=%d\n",x-y);
+}
+/*(.text+0x20): undefined reference to `main'
+fun.o: In function `fun':
+fun.c:(.text+0xc): undefined reference to `y'		*/

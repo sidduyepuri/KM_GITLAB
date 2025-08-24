@@ -1,0 +1,271 @@
+km@KernelMasters:~/KM_GITLAB/km52aesd37/C_Basics/26_oct_GDB$ gdb gdb_sample
+GNU gdb (Ubuntu 8.1.1-0ubuntu1) 8.1.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from gdb_sample...done.
+(gdb) l
+1	//1. gdb-sample.c: class room example program, attached this mail.
+2	#include<stdio.h>
+3	int Change_Value = 0;
+4	int Sum_it (int, int);
+5	void error_with_code (void);
+6	int main (void)
+7	{
+8		int Arg_1 = 20, Arg_2 = 40;
+9		int i;
+10	
+(gdb) l
+11	
+12		for (i = 0; i < 10; i++) {
+13			if (Arg_1 > Arg_2)
+14				Arg_2 = Sum_it (Arg_1, Arg_2);
+15			else
+16				Arg_1 = Sum_it (Arg_1, Arg_2);
+17		}
+18	
+19		error_with_code ();
+20	}
+(gdb) l
+21	
+22	int Sum_it (int a, int b)
+23	{
+24		return a+b;
+25	}
+26	
+27	void error_with_code(void)
+28	{
+29		int divide_value;
+30		int result;
+(gdb) l
+31		divide_value = Change_Value;
+32		result = 10 / divide_value;
+33		return ;
+34	}
+(gdb) b 12
+Breakpoint 1 at 0x610: file gdb_sample.c, line 12.
+(gdb) b 27
+Breakpoint 2 at 0x675: file gdb_sample.c, line 27.
+(gdb) i b
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x0000000000000610 in main at gdb_sample.c:12
+2       breakpoint     keep y   0x0000000000000675 in error_with_code at gdb_sample.c:27
+(gdb) watch Arg_1
+No symbol "Arg_1" in current context.
+(gdb) r
+Starting program: /home/km/KM_GITLAB/km52aesd37/C_Basics/26_oct_GDB/gdb_sample 
+
+Breakpoint 1, main () at gdb_sample.c:12
+12		for (i = 0; i < 10; i++) {
+(gdb) p Arg_1
+$1 = 20
+(gdb) p Arg_2
+$2 = 40
+(gdb) watch Arg_1
+Hardware watchpoint 3: Arg_1
+(gdb) watch Arg_2
+Hardware watchpoint 4: Arg_2
+(gdb) i b
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x0000555555554610 in main at gdb_sample.c:12
+	breakpoint already hit 1 time
+2       breakpoint     keep y   0x0000555555554675 in error_with_code at gdb_sample.c:27
+3       hw watchpoint  keep y                      Arg_1
+4       hw watchpoint  keep y                      Arg_2
+(gdb) s
+13			if (Arg_1 > Arg_2)
+(gdb) s
+16				Arg_1 = Sum_it (Arg_1, Arg_2);
+(gdb) s
+Sum_it (a=20, b=40) at gdb_sample.c:24
+24		return a+b;
+(gdb) s
+25	}
+(gdb) s
+
+Hardware watchpoint 3: Arg_1
+
+Old value = 20
+New value = 60
+main () at gdb_sample.c:12
+12		for (i = 0; i < 10; i++) {
+(gdb) s
+13			if (Arg_1 > Arg_2)
+(gdb) s
+14				Arg_2 = Sum_it (Arg_1, Arg_2);
+(gdb) n
+
+Hardware watchpoint 4: Arg_2
+
+Old value = 40
+New value = 100
+0x0000555555554633 in main () at gdb_sample.c:14
+14				Arg_2 = Sum_it (Arg_1, Arg_2);
+(gdb) s
+12		for (i = 0; i < 10; i++) {
+(gdb) s
+13			if (Arg_1 > Arg_2)
+(gdb) p i
+$3 = 2
+(gdb) s
+16				Arg_1 = Sum_it (Arg_1, Arg_2);
+(gdb) n
+
+Hardware watchpoint 3: Arg_1
+
+Old value = 60
+New value = 160
+main () at gdb_sample.c:12
+12		for (i = 0; i < 10; i++) {
+(gdb) c
+Continuing.
+
+Hardware watchpoint 4: Arg_2
+
+Old value = 100
+New value = 260
+0x0000555555554633 in main () at gdb_sample.c:14
+14				Arg_2 = Sum_it (Arg_1, Arg_2);
+(gdb) c
+Continuing.
+
+Hardware watchpoint 3: Arg_1
+
+Old value = 160
+New value = 420
+main () at gdb_sample.c:12
+12		for (i = 0; i < 10; i++) {
+(gdb) c
+Continuing.
+
+Hardware watchpoint 4: Arg_2
+
+Old value = 260
+New value = 680
+0x0000555555554633 in main () at gdb_sample.c:14
+14				Arg_2 = Sum_it (Arg_1, Arg_2);
+(gdb) c
+Continuing.
+
+Hardware watchpoint 3: Arg_1
+
+Old value = 420
+New value = 1100
+main () at gdb_sample.c:12
+12		for (i = 0; i < 10; i++) {
+(gdb) c
+Continuing.
+
+Hardware watchpoint 4: Arg_2
+
+Old value = 680
+New value = 1780
+0x0000555555554633 in main () at gdb_sample.c:14
+14				Arg_2 = Sum_it (Arg_1, Arg_2);
+(gdb) c
+Continuing.
+
+Hardware watchpoint 3: Arg_1
+
+Old value = 1100
+New value = 2880
+main () at gdb_sample.c:12
+12		for (i = 0; i < 10; i++) {
+(gdb) c
+Continuing.
+
+Hardware watchpoint 4: Arg_2
+
+Old value = 1780
+New value = 4660
+0x0000555555554633 in main () at gdb_sample.c:14
+14				Arg_2 = Sum_it (Arg_1, Arg_2);
+(gdb) c
+Continuing.
+
+Breakpoint 2, error_with_code () at gdb_sample.c:31
+31		divide_value = Change_Value;
+(gdb) p divide_value
+$4 = 1780
+(gdb) p Change_value
+No symbol "Change_value" in current context.
+(gdb) p Change_Value
+$5 = 0
+(gdb) s
+32		result = 10 / divide_value;
+(gdb) p divide_value
+$6 = 0
+(gdb) s
+
+Program received signal SIGFPE, Arithmetic exception.
+0x0000555555554684 in error_with_code () at gdb_sample.c:32
+32		result = 10 / divide_value;
+(gdb) s
+
+Program terminated with signal SIGFPE, Arithmetic exception.
+The program no longer exists.
+(gdb) p divide_value=10
+No symbol "divide_value" in current context.
+(gdb) quit
+
+====================> Arithmetic exception(Floating point exception) <===================== 
+
+
+km@KernelMasters:~/KM_GITLAB/km52aesd37/C_Basics/26_oct_GDB$ gdb gdb_sample
+GNU gdb (Ubuntu 8.1.1-0ubuntu1) 8.1.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from gdb_sample...done.
+(gdb) b 31
+Breakpoint 1 at 0x675: file gdb_sample.c, line 31.
+(gdb) r
+Starting program: /home/km/KM_GITLAB/km52aesd37/C_Basics/26_oct_GDB/gdb_sample 
+
+Breakpoint 1, error_with_code () at gdb_sample.c:31
+31		divide_value = Change_Value;
+(gdb) s
+32		result = 10 / divide_value;
+(gdb) p divide_value=10
+$1 = 10
+(gdb) p divide_value
+$2 = 10
+(gdb) s
+33		return ;
+(gdb) s
+34	}
+(gdb) s
+main () at gdb_sample.c:20
+20	}
+(gdb) s
+__libc_start_main (main=0x5555555545fa <main>, argc=1, argv=0x7fffffffdfd8, init=<optimized out>, fini=<optimized out>, 
+    rtld_fini=<optimized out>, stack_end=0x7fffffffdfc8) at ../csu/libc-start.c:344
+344	../csu/libc-start.c: No such file or directory.
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 2480] will be killed.
+
+Quit anyway? (y or n) y
+
+============> BUG IS CLEARED <============

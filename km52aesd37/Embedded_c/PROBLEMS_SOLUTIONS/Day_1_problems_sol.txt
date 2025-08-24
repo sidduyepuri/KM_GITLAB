@@ -1,0 +1,41 @@
+DATE: 11-NOV-2023 || TOPIC: EMBEDDED PROBLEMS AND SOLUTIONS
+
+1.ERROR CODE LOADING
+  Summary:- Error:Flash Download Failed -could not load file
+  Solution:- clear all the Errors
+
+2.Without connecting Target board
+  Summary:- NO ST_LINK detected
+  Solution:- connect ST_LINK debugger properly and check it in debug section
+
+3.Character array(string) declare and initialization after RCC_init(),LCD_config()......
+  Summary:- Declaration may not appear after executable statement in block
+  Solution:- Declare & initialization must be declared at the beginning of the main() program
+
+4.Wrong Address communication
+  Summary:- whenever giving wrong address ,it will goes to end of the program.
+  Solution:- Give correct address mentioned in the manual.
+
+5.Framework is neccessary
+  Summary:- The way of initialization & configuration done properly,otherwise we can't get output
+  Solution:- Follow the framework.
+
+6.without clearing LCD
+  Summary:-without clearing LCD don't write anything, if write it will be concatnated. it's not a proper output.
+  Solution:- To overcome this problem first we need to clear lcd.
+
+7.Do not RESET in debug mode
+  Summary:-In Debugging mode we can check way of execution, but don't press RESET button,it leads to damage microcontroller.
+  Solution:- Avoid RESET button,and better to use RESET option in debug mode.
+
+8.Blocking
+  Summary:-There is disconnection of internet,at that time entire is program is blocked.
+  Solution:-Better to use Timeout function.
+
+9.Master-slave communication
+  summary:-In SPI while communication of master-slave we can't control from slave,we chance from master only.
+  solution:-It's a full duplex communication so master only can handle this.
+
+10.BOOT MODE
+  summary:-Don't change BOOT MODE,if we change we cannot upload into the microcontroller.
+  solution:-so,keep it maintain '2' as HIGH (UP)&'1' as LOW(DOWN).

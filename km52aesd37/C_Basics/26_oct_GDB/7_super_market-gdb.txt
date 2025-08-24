@@ -1,0 +1,230 @@
+km@KernelMasters:~/KM_GITLAB/km52aesd37/C_Basics/26_oct_GDB/7_super_market$ gdb super_market-gdb 
+GNU gdb (Ubuntu 8.1.1-0ubuntu1) 8.1.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from super_market-gdb...done.
+(gdb) l
+1	/*3) WAP - for the 4 departments of a supermarket : Sales, Purchase, Stock and SuperMarket in four different source code files.
+2	Stock : Maintains a variable for available stock.
+3	Sales : Has one function: Sell – It will reduce the stock by the number of items sold. Before selling, check if enough stock is available.
+4	Purchase : Has one function : Purchase – will increase the stock by the number of items purchased.Set a max value for stock, before purchasing check if the stock room has enough space for new items or not.
+5	SuperMarket : Display menu with choices : 1 ) check AvailableStock 2 ) Purchase new items 3) Sell items … this should be continuous as long as the user wants to continue. Program should stop when the user wants to quit.	*/
+6	#include<stdio.h>
+7	int purchase();
+8	int sell();
+9	extern int stock;
+10	int main()
+(gdb) l
+11	{
+12		int n;
+13		do
+14		{
+15			printf("Enter your choice:\n 1) check Stock.\n 2) Sell.\n 3) Purchase. \n 4) quit.\n");
+16			scanf("%d",&n);
+17			switch(n)
+18			{
+19				case 1: printf("Available stock=%d\n",stock); break;
+20				case 2: sell(); break;
+(gdb) l
+21				case 3: purchase(); break;
+22				case 4:break;
+23	
+24				default: printf("Enter correct choice: \n");
+25			}
+26		}while(n!=4);
+27		return 0;
+28	}
+(gdb) b 13
+Breakpoint 1 at 0x781: file main.c, line 13.
+(gdb) b 20
+Breakpoint 2 at 0x7e0: file main.c, line 20.
+(gdb) b 21
+Breakpoint 3 at 0x7ec: file main.c, line 21.
+(gdb) r
+Starting program: /home/km/KM_GITLAB/km52aesd37/C_Basics/26_oct_GDB/7_super_market/super_market-gdb 
+
+Breakpoint 1, main () at main.c:15
+15			printf("Enter your choice:\n 1) check Stock.\n 2) Sell.\n 3) Purchase. \n 4) quit.\n");
+(gdb) n
+Enter your choice:
+ 1) check Stock.
+ 2) Sell.
+ 3) Purchase. 
+ 4) quit.
+16			scanf("%d",&n);
+(gdb) n
+1
+17			switch(n)
+(gdb) s
+19				case 1: printf("Available stock=%d\n",stock); break;
+(gdb) n
+Available stock=1000
+26		}while(n!=4);
+(gdb) s
+
+Breakpoint 1, main () at main.c:15
+15			printf("Enter your choice:\n 1) check Stock.\n 2) Sell.\n 3) Purchase. \n 4) quit.\n");
+(gdb) n
+Enter your choice:
+ 1) check Stock.
+ 2) Sell.
+ 3) Purchase. 
+ 4) quit.
+16			scanf("%d",&n);
+(gdb) n
+2
+17			switch(n)
+(gdb) s
+
+Breakpoint 2, main () at main.c:20
+20				case 2: sell(); break;
+(gdb) s
+sell () at sell.c:7
+7		printf("Enter sell items:");
+(gdb) l
+2	int deletestock(int);
+3	extern int stock;
+4	int items;
+5	int sell()
+6	{
+7		printf("Enter sell items:");
+8		scanf("%d",&items);
+9		if(stock>=items){
+10			deletestock(items);
+11		}
+(gdb) l
+12		else
+13			printf("Stock is not enough please purchase\n");
+14	}
+(gdb) l sell.c
+Function "sell.c" not defined.
+(gdb) watch stock
+Hardware watchpoint 4: stock
+(gdb) i b
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x0000555555554781 in main at main.c:13
+	breakpoint already hit 2 times
+2       breakpoint     keep y   0x00005555555547e0 in main at main.c:20
+	breakpoint already hit 1 time
+3       breakpoint     keep y   0x00005555555547ec in main at main.c:21
+4       hw watchpoint  keep y                      stock
+(gdb) n
+8		scanf("%d",&items);
+(gdb) 
+Enter sell items:200
+9		if(stock>=items){
+(gdb) 
+10			deletestock(items);
+(gdb) 
+
+Hardware watchpoint 4: stock
+
+Old value = 1000
+New value = 800
+deletestock (items=200) at stock.c:11
+11	}
+(gdb) s
+sell () at sell.c:14
+14	}
+(gdb) s
+main () at main.c:26
+26		}while(n!=4);
+(gdb) s
+
+Breakpoint 1, main () at main.c:15
+15			printf("Enter your choice:\n 1) check Stock.\n 2) Sell.\n 3) Purchase. \n 4) quit.\n");
+(gdb) n
+Enter your choice:
+ 1) check Stock.
+ 2) Sell.
+ 3) Purchase. 
+ 4) quit.
+16			scanf("%d",&n);
+(gdb) 
+3
+17			switch(n)
+(gdb) 
+
+Breakpoint 3, main () at main.c:21
+21				case 3: purchase(); break;
+(gdb) 
+Enter purchase stock:300
+stock is exceeded, Enter stock upto 200
+26		}while(n!=4);
+(gdb) 
+
+Breakpoint 1, main () at main.c:15
+15			printf("Enter your choice:\n 1) check Stock.\n 2) Sell.\n 3) Purchase. \n 4) quit.\n");
+(gdb) n
+Enter your choice:
+ 1) check Stock.
+ 2) Sell.
+ 3) Purchase. 
+ 4) quit.
+16			scanf("%d",&n);
+(gdb) 
+3
+17			switch(n)
+(gdb) 
+
+Breakpoint 3, main () at main.c:21
+21				case 3: purchase(); break;
+(gdb) 
+Enter purchase stock:100
+
+Hardware watchpoint 4: stock
+
+Old value = 800
+New value = 900
+addstock (items=100) at stock.c:7
+7	}
+(gdb) 
+purchase () at Purchase.c:15
+15	}
+(gdb) 
+main () at main.c:26
+26		}while(n!=4);
+(gdb) 
+
+Breakpoint 1, main () at main.c:15
+15			printf("Enter your choice:\n 1) check Stock.\n 2) Sell.\n 3) Purchase. \n 4) quit.\n");
+(gdb) n
+Enter your choice:
+ 1) check Stock.
+ 2) Sell.
+ 3) Purchase. 
+ 4) quit.
+16			scanf("%d",&n);
+(gdb)
+4
+(gdb) s
+22				case 4:break;
+(gdb) s
+26		}while(n!=4);
+(gdb) s
+27		return 0;
+(gdb) s
+28	}
+(gdb) s
+__libc_start_main (main=0x55555555476a <main>, argc=1, argv=0x7fffffffdf78, init=<optimized out>, fini=<optimized out>, 
+    rtld_fini=<optimized out>, stack_end=0x7fffffffdf68) at ../csu/libc-start.c:344
+344	../csu/libc-start.c: No such file or directory.
+(gdb) qiut
+Undefined command: "qiut".  Try "help".
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 19940] will be killed.
+
+Quit anyway? (y or n) y

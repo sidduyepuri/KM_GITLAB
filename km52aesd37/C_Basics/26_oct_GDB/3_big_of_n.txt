@@ -1,0 +1,173 @@
+km@KernelMasters:~/KM_GITLAB/km52aesd37/C_Basics/26_oct_GDB/3_biggest_of_n$ gdb biggest_of_n
+GNU gdb (Ubuntu 8.1.1-0ubuntu1) 8.1.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from biggest_of_n...done.
+(gdb) l
+1	//3. Find the biggest of n numbers, without using arrays.
+2	
+3	#include<stdio.h>
+4	int main()
+5	{
+6		int n,big=0,num;
+7		printf("Enter n value:");
+8		scanf("%d",&n);
+9		int i;
+10		for(i=1;i<=n;i++){
+(gdb) l
+11			printf("Enter %d value:",i);
+12			scanf("%d",&num);
+13			if(num>big)
+14				big=num;
+15		}
+16		printf("Biggest value is:%d\n",big);
+17		return 0;
+18	}
+(gdb) b 10
+Breakpoint 1 at 0x761: file 3_biggest_of_n.c, line 10.
+(gdb) watch i
+No symbol "i" in current context.
+(gdb) s
+The program is not being run.
+(gdb) r
+Starting program: /home/km/KM_GITLAB/km52aesd37/C_Basics/26_oct_GDB/3_biggest_of_n/biggest_of_n 
+Enter n value:5
+
+Breakpoint 1, main () at 3_biggest_of_n.c:10
+10		for(i=1;i<=n;i++){
+(gdb) watch i
+Hardware watchpoint 2: i
+(gdb) s
+
+Hardware watchpoint 2: i
+
+Old value = 32767
+New value = 1
+0x0000555555554768 in main () at 3_biggest_of_n.c:10
+10		for(i=1;i<=n;i++){
+(gdb) s
+11			printf("Enter %d value:",i);
+(gdb) n
+12			scanf("%d",&num);
+(gdb) n
+Enter 1 value:13
+13			if(num>big)
+(gdb) s
+14				big=num;
+(gdb) s
+10		for(i=1;i<=n;i++){
+(gdb) p big
+$1 = 13
+(gdb) s
+
+Hardware watchpoint 2: i
+
+Old value = 1
+New value = 2
+0x00005555555547aa in main () at 3_biggest_of_n.c:10
+10		for(i=1;i<=n;i++){
+(gdb) s
+11			printf("Enter %d value:",i);
+(gdb) n
+12			scanf("%d",&num);
+(gdb) n
+Enter 2 value:15
+13			if(num>big)
+(gdb) s
+14				big=num;
+(gdb) s
+10		for(i=1;i<=n;i++){
+(gdb) p big
+$2 = 15
+(gdb) s
+
+Hardware watchpoint 2: i
+
+Old value = 2
+New value = 3
+0x00005555555547aa in main () at 3_biggest_of_n.c:10
+10		for(i=1;i<=n;i++){
+(gdb) 
+11			printf("Enter %d value:",i);
+(gdb) n
+12			scanf("%d",&num);
+(gdb) n
+Enter 3 value:12
+13			if(num>big)
+(gdb) s
+10		for(i=1;i<=n;i++){
+(gdb) 
+
+Hardware watchpoint 2: i
+
+Old value = 3
+New value = 4
+0x00005555555547aa in main () at 3_biggest_of_n.c:10
+10		for(i=1;i<=n;i++){
+(gdb) 
+11			printf("Enter %d value:",i);
+(gdb) n
+12			scanf("%d",&num);
+(gdb) n
+Enter 4 value:14
+13			if(num>big)
+(gdb) 
+10		for(i=1;i<=n;i++){
+(gdb) s
+
+Hardware watchpoint 2: i
+
+Old value = 4
+New value = 5
+0x00005555555547aa in main () at 3_biggest_of_n.c:10
+10		for(i=1;i<=n;i++){
+(gdb) s
+11			printf("Enter %d value:",i);
+(gdb) n
+12			scanf("%d",&num);
+(gdb) n
+Enter 5 value:11
+13			if(num>big)
+(gdb) s
+10		for(i=1;i<=n;i++){
+(gdb) p big
+$3 = 15
+(gdb) s
+
+Hardware watchpoint 2: i
+
+Old value = 5
+New value = 6
+0x00005555555547aa in main () at 3_biggest_of_n.c:10
+10		for(i=1;i<=n;i++){
+(gdb) s
+16		printf("Biggest value is:%d\n",big);
+(gdb) n
+Biggest value is:15
+17		return 0;
+(gdb) 
+18	}
+(gdb) 
+
+Watchpoint 2 deleted because the program has left the block in
+which its expression is valid.
+__libc_start_main (main=0x55555555471a <main>, argc=1, argv=0x7fffffffdf98, init=<optimized out>, fini=<optimized out>, 
+    rtld_fini=<optimized out>, stack_end=0x7fffffffdf88) at ../csu/libc-start.c:344
+344	../csu/libc-start.c: No such file or directory.
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 3024] will be killed.
+
+Quit anyway? (y or n) y

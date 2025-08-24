@@ -1,0 +1,127 @@
+km@KernelMasters:~/KM_GITLAB/km52aesd37/C_Basics/26_oct_GDB/5_call_by_value$ gdb call 
+GNU gdb (Ubuntu 8.1.1-0ubuntu1) 8.1.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from call...done.
+(gdb) l
+1	//1) Write a program to swap two numbers using Call by Value and Call by Reference.
+2	#include<stdio.h>
+3	void swap(int,int);
+4	int main()
+5	{
+6		int x,y;
+7		printf("Enter x and y value:");
+8		scanf("%d%d",&x,&y);
+9		swap(x,y);
+10		printf("x=%d\ny=%d\n",x,y);
+(gdb) l
+11		return 0;
+12	}
+13	void swap(int a,int b)
+14	{
+15		int t;
+16		t=a;
+17		a=b;
+18		b=t;
+19		printf("a=%d\nb=%d\n",a,b);
+20	}
+(gdb) b 6
+Breakpoint 1 at 0x731: file 5_call_by_value.c, line 6.
+(gdb) b 13
+Breakpoint 2 at 0x7af: file 5_call_by_value.c, line 13.
+(gdb) r
+Starting program: /home/km/KM_GITLAB/km52aesd37/C_Basics/26_oct_GDB/5_call_by_value/call 
+
+Breakpoint 1, main () at 5_call_by_value.c:7
+7		printf("Enter x and y value:");
+(gdb) n
+8		scanf("%d%d",&x,&y);
+(gdb) n
+Enter x and y value:5 6
+9		swap(x,y);
+(gdb) s
+
+Breakpoint 2, swap (a=5, b=6) at 5_call_by_value.c:16
+16		t=a;
+(gdb) watch a
+Hardware watchpoint 3: a
+(gdb) watch b
+Hardware watchpoint 4: b
+(gdb) i b
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x0000555555554731 in main at 5_call_by_value.c:6
+	breakpoint already hit 1 time
+2       breakpoint     keep y   0x00005555555547af in swap at 5_call_by_value.c:13
+	breakpoint already hit 1 time
+3       hw watchpoint  keep y                      a
+4       hw watchpoint  keep y                      b
+(gdb) p t
+$1 = 0
+(gdb) p a
+$2 = 5
+(gdb) p b
+$3 = 6
+(gdb) s
+17		a=b;
+(gdb) p i
+No symbol "i" in current context.
+(gdb) pt
+type = int
+(gdb) p t
+$4 = 5
+(gdb) s
+
+Hardware watchpoint 3: a
+
+Old value = 5
+New value = 6
+swap (a=6, b=6) at 5_call_by_value.c:18
+18		b=t;
+(gdb) s
+
+Hardware watchpoint 4: b
+
+Old value = 6
+New value = 5
+swap (a=6, b=5) at 5_call_by_value.c:19
+19		printf("a=%d\nb=%d\n",a,b);
+(gdb) n
+a=6
+b=5
+20	}
+(gdb) s
+
+Watchpoint 3 deleted because the program has left the block in
+which its expression is valid.
+
+Watchpoint 4 deleted because the program has left the block in
+which its expression is valid.
+main () at 5_call_by_value.c:10
+10		printf("x=%d\ny=%d\n",x,y);
+(gdb) n
+x=5
+y=6
+11		return 0;
+(gdb) s
+12	}
+(gdb) s
+__libc_start_main (main=0x55555555471a <main>, argc=1, argv=0x7fffffffdfa8, init=<optimized out>, fini=<optimized out>, 
+    rtld_fini=<optimized out>, stack_end=0x7fffffffdf98) at ../csu/libc-start.c:344
+344	../csu/libc-start.c: No such file or directory.
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 19661] will be killed.
+
+Quit anyway? (y or n) y

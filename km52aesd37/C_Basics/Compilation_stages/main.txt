@@ -1,0 +1,19 @@
+//#include "abc.h" 
+/*1.c:1:10: fatal error: abc.h: No such file or directory
+ #include "abc.h"
+          ^~~~~~~
+compilation terminated.			(preprocessor error)*/
+#include"km.h"
+void fun();
+extern int x;
+int y=6;
+int main()
+{
+	//printf("add=%d\n",x+y)		//(compiler error): expected ‘;’ before ‘fun’
+	printf("add=%d\n",x+y);
+	fun();
+	/*Linker(Run time error)
+	  1.c:(.text+0x6): undefined reference to `x'
+	  1.c:(.text+0x2b): undefined reference to `fun'		*/
+	return 0;
+}
